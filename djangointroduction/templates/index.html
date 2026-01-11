@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My ToDo App</title>
+</head>
+<body>
+    {% if tasks %}
+        <h1>All tasks</h1>
+    {% else %}
+        <h1>No Tasks</h1>
+    {% endif %}
+    {% for task in tasks %}
+        <li>{{ task.title }} - {{ task.is_completed }}</li>
+    {% endfor %}
+</body>
+</html>
