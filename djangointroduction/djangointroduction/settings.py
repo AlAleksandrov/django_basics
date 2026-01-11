@@ -88,7 +88,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "django_introduction_db",
         "USER": "postgres",
-        "PASSWORD": "@9c5m6I5a3",
+        "PASSWORD": "********",
         "HOST": "127.0.0.1",
         "PORT": "5432",
     }
@@ -129,3 +129,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
