@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">{{ page_title }}</h1>
+
+    {% if books %}
+        <div class="list-group">
+            {% for book in books %}
+                <a href="{% url 'books:details' book.slug %}" class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{ book.title }}</h5>
+                        <small>
+                            {% if book.avg_rating %}
+                                {{ book.avg_rating }} ★
+                            {% else %}
+                                No rating
+                            {% endif %}
+                        </small>
+                    </div>
+                    <p class="mb-1">{{ book.description }}</p>
+                    <small>Click to see details</small>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            No books available at the moment. Please check back later!
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">{{ page_title }}</h1>
+
+    {% if reviews %}
+        <div class="list-group">
+            {% for review in reviews %}
+                <a href="{% url 'reviews:details' review.pk %}" class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">Review of "{{ review.book.title }}" by {{ review.author }}</h5>
+                        <small>{{ review.rating }} ★</small>
+                    </div>
+                    <p class="mb-1">{{ review.body }}</p>
+                    <small>Click to see details</small>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            No reviews available at the moment. Please check back later!
+        </div>
+    {% endif %}
+{% endblock %}

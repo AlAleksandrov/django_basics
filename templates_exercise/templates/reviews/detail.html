@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">{{ page_title }}</h1>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">Review by: {{ review.author }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">For the book: <a href="{% url 'books:details' review.book.slug %}">{{ review.book.title }}</a></h6>
+            <p class="card-text">{{ review.body }}</p>
+            <p class="card-text"><strong>Rating:</strong> 
+                {{ star_rating_html|safe }}
+            </p>
+            <p class="card-text">
+                <strong>Spoiler:</strong> 
+                {% if review.is_spoiler %}
+                    <span class="badge bg-danger">Yes</span>
+                {% else %}
+                    <span class="badge bg-success">No</span>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+{% endblock %}

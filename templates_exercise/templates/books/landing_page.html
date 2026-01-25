@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">{{ page_title }}</h1>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Total Books in Store</h5>
+                    <p class="card-text fs-3">{{ total_books }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if latest_books %}
+        <div class="card mb-3 shadow-sm">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="{{ latest_books.image_url }}" class="img-fluid rounded-start" alt="{{ latest_books.title }}">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ latest_books.title }}</h5>
+                        <p class="card-text">{{ latest_books.description }}</p>
+                        <p class="card-text"><small class="text-muted">Price: ${{ latest_books.price }}</small></p>
+                        <a href="{% url 'books:details' latest_books.slug %}" class="btn btn-primary">View Latest Book Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            No latest book available at the moment. Please check back later!
+        </div>
+    {% endif %}
+{% endblock %}
