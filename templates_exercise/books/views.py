@@ -1,7 +1,7 @@
-from django.db.models import Avg
+from django.db.models import Avg, Q
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, get_object_or_404, redirect
-from books.forms import BookFormBasic, BookCreateForm, BookEditForm, BookDeleteForm
+from books.forms import BookFormBasic, BookCreateForm, BookEditForm, BookDeleteForm, BookSearchForm
 from books.models import Book
 
 
@@ -19,13 +19,25 @@ def landing_page(request: HttpRequest) -> HttpResponse:
     return render(request, 'books/landing_page.html', context)
 
 def book_list(request: HttpRequest) -> HttpResponse:
+    search_form = BookSearchForm(request.GET or None)
+
     list_books = Book.objects.annotate(
         avg_rating=Avg('reviews__rating')
     ).order_by('title')
 
+    if 'query' in request.GET:
+        if search_form.is_valid():
+            search_value = search_form.cleaned_data['query']
+            list_books = list_books.filter(
+                Q(title__icontains=search_value)
+                    |
+                Q(description__icontains=search_value)
+            )
+
     context = {
         'books': list_books,
         'page_title': 'Dashboard',
+        'search_form': search_form
     }
 
     return render(request, 'books/list.html', context)

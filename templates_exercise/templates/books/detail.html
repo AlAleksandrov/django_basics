@@ -38,14 +38,18 @@
         </div>
     </div>
 
-    <h2 class="mt-5 mb-4">Reviews</h2>
+    <h2 class="mt-5 mb-4">Reviews <a href="{% url 'books:review_create' pk=book.pk %}" class="btn btn-primary btn-sm">Add Review</a></h2>
     {% if book.reviews.all %}
         <div class="list-group">
             {% for review in book.reviews.all %}
                 <div class="list-group-item">
                     <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1">{{ review.author }}</h5>
-                        <small>{{ review.rating }} ★</small>
+                        <div>
+                            <small>{{ review.rating }} ★</small>
+                            <a href="{% url 'reviews:edit' review.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{% url 'reviews:delete' review.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                        </div>
                     </div>
                     <p class="mb-1">{{ review.body }}</p>
                     <p class="mb-1"><strong>Spoiler:</strong> {{ review.is_spoiler }}</p>

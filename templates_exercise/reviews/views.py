@@ -1,6 +1,7 @@
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render, get_object_or_404
-
+from django.shortcuts import render, get_object_or_404, redirect
+from books.models import Book
+from reviews.forms import ReviewCreateForm, ReviewEditForm, ReviewDeleteForm
 from reviews.models import Review
 
 
@@ -42,3 +43,50 @@ def review_details(request: HttpRequest, pk: int) -> HttpResponse:
     }
 
     return render(request, 'reviews/detail.html', context)
+
+def review_create(request: HttpRequest, pk: int) -> HttpResponse:
+    book = get_object_or_404(Book, pk=pk)
+    form = ReviewCreateForm(request.POST or None)
+
+    if request.method == 'POST' and form.is_valid():
+        review = form.save(commit=False)
+        review.book = book
+        review.save()
+        return redirect('books:details', slug=book.slug)
+
+    context = {
+        'form': form,
+        'book': book,
+    }
+
+    return render(request, 'reviews/create.html', context)
+
+def review_edit(request: HttpRequest, pk: int) -> HttpResponse:
+    review = get_object_or_404(Review, pk=pk)
+    form = ReviewEditForm(request.POST or None, instance=review)
+
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect('books:details', slug=review.book.slug)
+
+    context = {
+        'form': form,
+        'review': review,
+    }
+
+    return render(request, 'reviews/edit.html', context)
+
+def review_delete(request: HttpRequest, pk: int) -> HttpResponse:
+    review = get_object_or_404(Review, pk=pk)
+    form = ReviewDeleteForm(request.POST or None, instance=review)
+
+    if request.method == 'POST' and form.is_valid():
+        review.delete()
+        return redirect('books:details', slug=review.book.slug)
+
+    context = {
+        'form': form,
+        'review': review,
+    }
+
+    return render(request, 'reviews/delete.html', context)

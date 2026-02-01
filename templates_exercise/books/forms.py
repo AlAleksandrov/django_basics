@@ -1,9 +1,7 @@
-from datetime import date
 from typing import Any
-
 from django import forms
-
 from books.models import Book, Tag
+from common.forms import DisabledFieldsMixin
 
 
 # class BookFormBasic(forms.Form):
@@ -66,15 +64,13 @@ class BookCreateForm(BookFormBasic):
 class BookEditForm(BookFormBasic):
     ...
 
-class BookDeleteForm(BookFormBasic):
-    # class Meta(BookFormBasic.Meta):
-    #     widgets = {
-    #         'title': forms.TextInput(
-    #             attrs={'disabled': True}
-    #         ),
-    #     }
+class BookDeleteForm(DisabledFieldsMixin, BookFormBasic):
+    ...
 
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
-        super().__init__(*args, **kwargs)
-        for name in self.fields:
-            self.fields[name].disabled = True
+class BookSearchForm(forms.Form):
+    query = forms.CharField(
+        max_length=100,
+        label='',
+        widget=forms.TextInput(attrs={'placeholder': 'Search books...'}),
+        required=False
+    )
