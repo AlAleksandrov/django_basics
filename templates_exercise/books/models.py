@@ -46,6 +46,11 @@ class Book(TimeStampModel):
     publisher = models.CharField(
         max_length=100,
     )
+    tags = models.ManyToManyField(
+        'Tag',
+        blank=True,
+        related_name='books',
+    )
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -54,3 +59,12 @@ class Book(TimeStampModel):
 
     def __str__(self):
         return self.title
+
+
+class Tag(models.Model):
+    name = models.CharField(
+        max_length=50,
+    )
+
+    def __str__(self) -> str:
+        return self.name

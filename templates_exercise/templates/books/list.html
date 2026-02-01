@@ -14,7 +14,7 @@
                         <h5 class="mb-1">{{ book.title }}</h5>
                         <small>
                             {% if book.avg_rating %}
-                                {{ book.avg_rating }} ★
+                                {{ book.avg_rating|floatformat:"2" }} ★
                             {% else %}
                                 No rating
                             {% endif %}

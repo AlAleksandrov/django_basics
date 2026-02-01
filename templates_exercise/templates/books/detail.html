@@ -21,14 +21,19 @@
                     <p class="card-text"><strong>Publishing Date:</strong> {{ book.publishing_date }}</p>
                     <p class="card-text"><strong>Publisher:</strong> {{ book.publisher }}</p>
                     <p class="card-text"><strong>Pages:</strong> {{ book.pages }}</p>
+                    <p class="card-text"><strong>Tags:</strong> {{ book.tags.all|join:', ' }}</p>
                     <p class="card-text"><strong>Average Rating:</strong> 
                         {% if book.avg_rating %}
-                            {{ book.avg_rating }} ★
+                            {{ book.avg_rating|floatformat:"2" }} ★
                         {% else %}
                             No rating
                         {% endif %}
                     </p>
                 </div>
+            </div>
+            <div class="col-md-4">
+                <a href="{% url 'books:edit' book.pk %}" class="btn btn-warning">Edit</a>
+                <a href="{% url 'books:delete' book.pk %}" class="btn btn-danger">Delete</a>
             </div>
         </div>
     </div>
@@ -43,6 +48,7 @@
                         <small>{{ review.rating }} ★</small>
                     </div>
                     <p class="mb-1">{{ review.body }}</p>
+                    <p class="mb-1"><strong>Spoiler:</strong> {{ review.is_spoiler }}</p>
                 </div>
             {% endfor %}
         </div>
