@@ -11,7 +11,16 @@ class ReviewCreateForm(ReviewFormBasic):
     pass
 
 class ReviewEditForm(ReviewFormBasic):
-    pass
+    def __init__(self, book=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.book = book
+
+    def save(self, commit: bool = True) -> Review:
+        if commit:
+            self.instance.save()
+
+        return self.instance
+
 
 class ReviewDeleteForm(DisabledFieldsMixin, ReviewFormBasic):
     pass

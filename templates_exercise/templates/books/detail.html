@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'common/base.html' %}
 {% load static %}
 
 {% block title %}{{ page_title }}{% endblock %}
@@ -10,6 +10,7 @@
         <div class="row g-0">
             <div class="col-md-4">
                 <img src="{{ book.image_url }}" class="img-fluid rounded-start" alt="{{ book.title }}">
+                <img src="{{ book.cover_image.url }}" class="img-fluid rounded-start" alt="{{ book.title }}">
             </div>
             <div class="col-md-8">
                 <div class="card-body">

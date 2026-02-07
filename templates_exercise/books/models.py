@@ -1,6 +1,7 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 
+from books.validators import range_validator2, RangeValidator
 from common.models import TimeStampModel
 
 
@@ -22,10 +23,24 @@ class Book(TimeStampModel):
     price = models.DecimalField(
         max_digits=6,
         decimal_places=2,
+        validators=[
+            # range_validator2(0, 1000),
+            RangeValidator(0, 1000, message='Price should be between 0 and 1000'),
+        ],
     )
     isbn = models.CharField(
         max_length=12,
         unique=True,
+    )
+    cover_image = models.ImageField(
+        null=True,
+        blank=True,
+        upload_to='book_covers/',
+    )
+    author = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
     )
     genre = models.CharField(
         max_length=50,

@@ -1,3 +1,4 @@
+from django.forms import modelformset_factory
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from books.models import Book
@@ -60,6 +61,41 @@ def review_create(request: HttpRequest, pk: int) -> HttpResponse:
     }
 
     return render(request, 'reviews/create.html', context)
+
+def review_bulk_edit(request: HttpRequest, book_slug: str) -> HttpResponse:
+    book = get_object_or_404(Book, slug=book_slug)
+    ReviewFormSet = modelformset_factory(
+        Review,
+        form=ReviewEditForm,
+        can_delete=True,
+        extra=1,
+    )
+
+    formset = ReviewFormSet(
+        request.POST or None,
+        queryset=Review.objects.filter(book=book),
+        form_kwargs={'book': book},
+    )
+
+    if request.method == 'POST' and formset.is_valid():
+        instances = formset.save(commit=False)
+
+        for instance in instances:
+            instance.book = book
+            instance.save()
+
+        for instance in formset.deleted_objects:
+            instance.delete()
+
+
+        return redirect('review:list')
+
+    context = {
+        'formset': formset,
+        'book': book,
+    }
+
+    return render(request, 'reviews/formset_edit.html', context)
 
 def review_edit(request: HttpRequest, pk: int) -> HttpResponse:
     review = get_object_or_404(Review, pk=pk)
