@@ -32,6 +32,12 @@ DEBUG = os.getenv("DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",") if os.getenv("ALLOWED_HOSTS") else []
 
+if DEBUG:
+    ALLOWED_HOSTS.extend([
+        "127.0.0.1",
+        "localhost",
+        "rosella-unshotted-adjustably.ngrok-free.dev",
+    ])
 
 # Application definition
 
