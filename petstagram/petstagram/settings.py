@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 import os
+from django.conf.global_settings import CSRF_TRUSTED_ORIGINS
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -34,6 +35,11 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",") if os.getenv("ALLOWED_
 
 if DEBUG:
     ALLOWED_HOSTS.extend([
+        "127.0.0.1",
+        "localhost",
+        "rosella-unshotted-adjustably.ngrok-free.dev",
+    ])
+    CSRF_TRUSTED_ORIGINS.extend([
         "127.0.0.1",
         "localhost",
         "rosella-unshotted-adjustably.ngrok-free.dev",
