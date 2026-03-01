@@ -5,4 +5,5 @@ app_name = 'reviews'
 
 urlpatterns = [
     path('create/', views.ReviewCreateView.as_view(), name='welcome'),
+    path('', views.ReviewListView.as_view(), name='home'),
 ]

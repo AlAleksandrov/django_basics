@@ -1,5 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.urls import reverse
+
 from common.choices import CountryChoice
 from travelers.validators import validate_email_domain
 
@@ -24,6 +26,9 @@ class Traveler(models.Model):
     registered_at = models.DateTimeField(
         auto_now_add=True
     )
+
+    def get_absolute_url(self):
+        return reverse('travelers:detail', kwargs={'pk': self.pk})
 
     def __str__(self):
         return self.name
