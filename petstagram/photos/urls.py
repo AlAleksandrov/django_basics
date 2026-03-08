@@ -7,8 +7,8 @@ app_name = "photos"
 
 photo_patterns = [
     path('', views.photo_details, name='details'),
-    path('edit/', views.photo_edit, name='edit'),
-    path('delete/', views.photo_delete, name='delete'),
+    path('edit/', views.PhotoEditView.as_view(), name='edit'),
+    path('delete/', views.PhotoDeleteView.as_view(), name='delete'),
 ]
 
 urlpatterns = [

@@ -144,7 +144,7 @@ USE_TZ = os.getenv("USE_TZ", "True") == "True"
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = os.getenv("STATIC_URL", "static/")
+STATIC_URL = os.getenv("STATIC_URL", "/static/")
 # STATIC_ROOT = BASE_DIR / os.getenv("STATIC_ROOT", "staticfiles")
 
 STATICFILES_DIRS = [
@@ -154,6 +154,19 @@ STATICFILES_DIRS = [
 # Media files (user uploads)
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+# Email settings
+EMAIL_BACKEND = os.getenv("EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_PORT = os.getenv("EMAIL_PORT")
+COMPANY_EMAIL = os.getenv("COMPANY_EMAIL")
+
+AUTH_USER_MODEL = "accounts.AppUser"
+LOGIN_REDIRECT_URL = "common:home"
+LOGOUT_REDIRECT_URL = "common:login"
+LOGIN_URL = "common:login"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/6.0/ref/settings/#default-auto-field

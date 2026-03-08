@@ -45,6 +45,7 @@ def add_comment(request: HttpRequest, photo_pk: int) -> HttpResponse:
         if form.is_valid():
             comment = form.save(commit=False)
             comment.to_photo = photo
+            comment.user = request.user
             comment.save()
 
     return redirect(request.META.get('HTTP_REFERER') + f"#{photo_pk}")
@@ -53,12 +54,15 @@ def search_photos(request: HttpRequest, query: str = None) ->HttpResponse:
     ...
 
 def like_functionality(request: HttpRequest, photo_pk: int) -> HttpResponse:
-    like_object = Like.objects.filter(to_photo_id=photo_pk).first()
+    like_object = Like.objects.filter(to_photo_id=photo_pk, user=request.user).first()
 
     if like_object:
         like_object.delete()
     else:
-        Like.objects.create(to_photo_id=photo_pk)
+        Like.objects.create(
+            to_photo_id=photo_pk,
+            user=request.user,
+        )
 
     return redirect(request.META.get('HTTP_REFERER') + f"#{photo_pk}")
 
