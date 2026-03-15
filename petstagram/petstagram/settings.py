@@ -33,17 +33,7 @@ DEBUG = os.getenv("DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",") if os.getenv("ALLOWED_HOSTS") else []
 
-if DEBUG:
-    ALLOWED_HOSTS.extend([
-        "127.0.0.1",
-        "localhost",
-        "rosella-unshotted-adjustably.ngrok-free.dev",
-    ])
-    CSRF_TRUSTED_ORIGINS.extend([
-        "http://127.0.0.1",
-        "http://localhost",
-        "https://rosella-unshotted-adjustably.ngrok-free.dev",
-    ])
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",") if os.getenv("CSRF_TRUSTED_ORIGINS") else []
 
 # Application definition
 
@@ -66,6 +56,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -145,11 +136,17 @@ USE_TZ = os.getenv("USE_TZ", "True") == "True"
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = os.getenv("STATIC_URL", "/static/")
-# STATIC_ROOT = BASE_DIR / os.getenv("STATIC_ROOT", "staticfiles")
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Media files (user uploads)
 MEDIA_URL = "media/"
@@ -172,7 +169,6 @@ LOGIN_URL = "common:login"
 # https://docs.djangoproject.com/en/6.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 
 # Security settings (за production)
 if not DEBUG:
